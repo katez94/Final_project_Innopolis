@@ -1,18 +1,13 @@
-import bookStore.bookStoreModel.CollectionOfIsbn;
-import bookStore.bookStoreModel.BooksToAdd;
-import bookStore.bookStoreModel.User;
+import bookStore.bookStoreModel.*;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
-import io.restassured.response.Response;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
-
 import static apiTestHelper.ApiTestHelper.*;
+
 
 @Epic("ApiTest")
 @Feature("BookStoreApiTest")
@@ -21,51 +16,43 @@ public class ApiTest {
     private static final User user = getUser();
     public static final String ISBN = getRandomIsbn();
 
+    @BeforeEach
+    public void deleteBooksInit() {
+        deleteBooks(user.getUserId());
+    }
 
-    //GET - Books
     @Step("GetAllBooks")
     @Test
     void getAllBooksTest() {
-        Assertions.assertEquals(200, getAllBooks().getStatusCode());
+        getListOfBooks();
     }
 
-    // GET - One Book
     @Step("GetOneBook")
     @Test
     void getBookByISBNTest() {
-        Assertions.assertEquals(200, getBookByISBN(ISBN).getStatusCode());
+        Book book = getBookByISBN(ISBN);
+        Assertions.assertEquals(ISBN, book.getIsbn());
     }
 
     @Step("AddListOfBooks")
-    @Test // добавили рандомную книгу, проверили статус код
-    void addListOfBooksToUserTest() {
-        CollectionOfIsbn collection = new CollectionOfIsbn();
-        collection.setIsbn(ISBN);
-        BooksToAdd booksToAdd = new BooksToAdd(user.getUserId(), Collections.singletonList(collection));
-        Assertions.assertEquals(201,addBooksToUser(booksToAdd).getStatusCode());
-    }
-
-    @Step("DeleteBooks")
-    @Test // добавили список книг, затем удалили, и проеверили статус код
-    void deleteBooksTest() {
-        CollectionOfIsbn collection = new CollectionOfIsbn();
-
-        System.out.println(getListOfBooks().getBooks());
-        BooksToAdd booksToAdd = new BooksToAdd(user.getUserId(),Collections.singletonList(collection));
-        Assertions.assertEquals(201,addBooksToUser(booksToAdd).getStatusCode());
-        Assertions.assertEquals(204, deleteBooks(getUser().getUserId()).getStatusCode());
-    }
-
-    @Step("DeleteBook")
     @Test
-    void deleteBookTest() {
+    void addListOfBooksToUserTest() {
+        BooksToAdd bookToAdd = getBookToAdd(user.getUserId(), ISBN);
+        addBooksToUser(bookToAdd, 201);
+        addBooksToUser(bookToAdd, 400);
+    }
 
-        CollectionOfIsbn collection = new CollectionOfIsbn();
-        collection.setIsbn(ISBN);
-        BooksToAdd booksToAdd = new BooksToAdd(user.getUserId(),Collections.singletonList(collection));
-        Assertions.assertEquals(201,addBooksToUser(booksToAdd).getStatusCode());
-
-        Assertions.assertEquals(204, deleteBooks(getUser().getUserId()).getStatusCode());
-
+    @Step("ReplaceBook")
+    @Test
+    void replaceBookTest() {
+        String randomIsbn = getRandomIsbn();
+        while (randomIsbn.equals(ISBN)) {
+            randomIsbn = getRandomIsbn();
+        }
+        addBooksToUser(getBookToAdd(user.getUserId(), ISBN), 201);
+        ReplaceIsbn replacableIsbn = new ReplaceIsbn(randomIsbn, getUser().getUserId());
+        replaceBook(ISBN, replacableIsbn);
+        addBooksToUser(getBookToAdd(user.getUserId(), ISBN), 201);
+        addBooksToUser(getBookToAdd(user.getUserId(), randomIsbn), 400);
     }
 }

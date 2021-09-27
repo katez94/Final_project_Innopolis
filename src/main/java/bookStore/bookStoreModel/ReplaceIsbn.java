@@ -1,10 +1,10 @@
 package bookStore.bookStoreModel;
 
-public class StringObjectModel {
+public class ReplaceIsbn {
     private String isbn;
     private   String userId;
 
-    public StringObjectModel(String isbn, String userId) {
+    public ReplaceIsbn(String isbn, String userId) {
         this.isbn = isbn;
         this.userId = userId;
     }
