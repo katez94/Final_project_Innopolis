@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.8.1'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.4.0' // работа с запросами
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.4.3'
+    implementation group: 'com.codeborne', name: 'selenide', version: '5.24.3'
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '6.11.0'
+    implementation group: 'io.cucumber', name: 'cucumber-junit', version: '6.11.0'
+    implementation group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.14.0'
+    implementation group: 'io.qameta.allure', name: 'allure-selenide', version: '2.14.0'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.4' // распарсивание дж объектов
+    implementation group: 'org.json', name: 'json', version: '20210307' // создавать джейсон объектs
+}
+
+// тест апи с запуском из градл таски
+tasks.register("apiTests", Test).configure(){
+    useJUnitPlatform{includeTags 'api'}
+    jvmArgs "-noverify"
+}
+
+//тест ui с запуском из градл таски
+tasks.register("uiTests", Test).configure(){
+    useJUnitPlatform{includeTags 'ui'}
+    jvmArgs "-noverify"
+}
+
+allure {
+    autoconfigure = true
+    resultsDir(new File(project.buildDir, 'allure-results'))
+    reportDir(new File(project.buildDir, 'allure-reports'))
+    version = '2.14.0'
+    useJUnit5 {version = '2.14.0' }
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom implementation
+    }
+    testCompile
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:build/cucumber-report.html',
+                    '--plugin', 'json:build/cucumber-report.json',
+                    '--glue', 'classpath:steps',
+                    '--glue', 'classpath:hooks', 'src/test/resources'
+            ]
+        }
+    }
+}
