@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class LogInPage {
 
-    @FindBy(className = "main-header")
+    @FindBy(xpath = "//*[@class='main-header']")
     private static SelenideElement header;
 
     @FindBy(xpath = "//*[@id=\"userForm\"]/div[1]/h2")

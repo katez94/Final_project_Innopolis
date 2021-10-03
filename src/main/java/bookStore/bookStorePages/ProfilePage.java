@@ -12,95 +12,161 @@ import java.util.List;
 public class ProfilePage {
 
     @FindBy (id = "userName-value")
-    private SelenideElement userNameLabel;
+    private static SelenideElement userNameLabel;
 
     @FindBy (id = "searchBox")
-    private SelenideElement profileSearchBox;
+    private static SelenideElement profileSearchBox;
 
     @FindBy (id = "basic-addon2")
-    private SelenideElement searchBtn;
+    private static SelenideElement searchBtn;
 
-    @FindBy (id = "submit")
-    private SelenideElement logOutBtn;
+    @FindBy (xpath = "//div[@class='text-right col-md-4 col-sm-12']/button")
+    private static SelenideElement logOutBtn;
 
-    @FindBy (id = "gotoStore")
-    private SelenideElement gotoStoreBtn;
+    @FindBy (xpath = "//*[@class=\"text-left button\"]/button")
+    private static SelenideElement gotoBookStoreBtn;
 
     @FindBy (css = ".text-center.button > button")
-    private SelenideElement deleteAccountBtn;
+    private static SelenideElement deleteAccountBtn;
 
     @FindBy (css = ".text-right.button.di > button")
-    private SelenideElement deleteAllBooksBtn;
+    private static SelenideElement deleteAllBooksBtn;
 
     @FindBy(css = ".-previous > button")
-    private SelenideElement previousButton;
+    private static SelenideElement previousButton;
 
     @FindBy(css = ".-next > button")
-    private SelenideElement nextButton;
+    private static SelenideElement nextButton;
 
     @FindBy(css = ".-pageSizeOptions > select")
-    private SelenideElement rowsSelector;
+    private static SelenideElement rowsSelector;
 
     @FindBy(css = ".-pageJump > input")
-    private SelenideElement pageNumber;
+    private static SelenideElement pageNumber;
 
     @FindBy(css = ".action-buttons > span > a")
-    private List<SelenideElement> booksTitles;
+    private static List<SelenideElement> booksTitles;
 
     @FindBy(xpath = "//div[@class=\"rt-tr-group\"]//div[3][contains(text(), ' ')]")
-    private List<SelenideElement> booksAuthors;
+    private static List<SelenideElement> booksAuthors;
 
     @FindBy(xpath = "//div[@class=\"rt-tr-group\"]//div[4][contains(text(), ' ')]")
-    private List<SelenideElement> booksPublishers;
+    private static List<SelenideElement> booksPublishers;
 
     @FindBy(id = "delete-record-undefined")
-    private List<SelenideElement> deleteActionBtns;
+    private static List<SelenideElement> deleteActionBtns;
 
-    public void clickSearchBtn() {
+    public static SelenideElement getBookAuthor(int index) {
+        return booksAuthors.get(index);
+    }
+    public static SelenideElement getBookPublisher(int index) {
+        return booksPublishers.get(index);
+    }
+    public static void clickGoToBookStoreBtn() {
+        gotoBookStoreBtn.click();
+    }
+
+    public static SelenideElement getProfileSearchBox() {
+        return profileSearchBox;
+    }
+
+    public static SelenideElement getSearchBtn() {
+        return searchBtn;
+    }
+
+    public static SelenideElement getLogOutBtn() {
+        return logOutBtn;
+    }
+
+    public static SelenideElement getGotoBookStoreBtn() {
+        return gotoBookStoreBtn;
+    }
+
+    public static SelenideElement getDeleteAccountBtn() {
+        return deleteAccountBtn;
+    }
+
+    public static SelenideElement getDeleteAllBooksBtn() {
+        return deleteAllBooksBtn;
+    }
+
+    public static SelenideElement getPreviousButton() {
+        return previousButton;
+    }
+
+    public static SelenideElement getNextButton() {
+        return nextButton;
+    }
+
+    public static SelenideElement getRowsSelector() {
+        return rowsSelector;
+    }
+
+    public static SelenideElement getPageNumber() {
+        return pageNumber;
+    }
+
+    public static List<SelenideElement> getBooksTitles() {
+        return booksTitles;
+    }
+
+    public static List<SelenideElement> getBooksAuthors() {
+        return booksAuthors;
+    }
+
+    public static List<SelenideElement> getBooksPublishers() {
+        return booksPublishers;
+    }
+
+    public static List<SelenideElement> getDeleteActionBtns() {
+        return deleteActionBtns;
+    }
+
+    public static void clickSearchBtn() {
         searchBtn.click();
     }
 
-    public void clickLogOutBtn() {
+    public static void clickLogOutBtn() {
         logOutBtn.click();
     }
 
-    public void clickDeleteAccountBtn() {
+    public static void clickDeleteAccountBtn() {
         deleteAccountBtn.click();
     }
 
-    public void clickDeleteAllBooksBtn() {
+    public static void clickDeleteAllBooksBtn() {
         deleteAllBooksBtn.click();
     }
 
-    public void clickPreviousBtn() {
+    public static void clickPreviousBtn() {
         previousButton.click();
     }
 
-    public void clickNextBtn() {
+    public static void clickNextBtn() {
         nextButton.click();
     }
 
-    public void findBooks(String keys) {
+    public static void findBooks(String keys) {
         profileSearchBox.sendKeys(keys);
     }
 
-    public SelenideElement getBookTitle(int index) {
+    public static SelenideElement getBookTitle(int index) {
         return booksTitles.get(index);
     }
 
-    public List<String> getBookTitles() {
+    public static List<String> getBookTitles() {
         List<String> titles = new ArrayList<>();
         for (SelenideElement title : booksTitles) {
             titles.add(title.getText());
         }
         return titles;
     }
-    public void selectRow(String value){
+    public static void selectRow(String value){
         Select rows = new Select(rowsSelector);
         rows.selectByValue(value);
     }
 
-    public String getPageFieldValue() {
+    public static String getPageFieldValue() {
         return pageNumber.getAttribute("value");
     }
 
@@ -108,7 +174,7 @@ public class ProfilePage {
 //        return deleteActionBtns.get(bookIndex);
 //    }
 
-    public String getUserNameLabel() {
+    public static String getUserNameLabel() {
         return userNameLabel.getText();
     }
 }

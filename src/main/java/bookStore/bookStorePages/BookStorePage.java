@@ -17,38 +17,74 @@ public class BookStorePage {
 //    }
 
     @FindBy(id = "searchBox")
-    private SelenideElement searchBox;
+    private static SelenideElement searchBox;
 
     @FindBy(css = ".action-buttons > span > a")
-    private List<SelenideElement> booksTitles;
+    private static List<SelenideElement> booksTitles;
 
     @FindBy(xpath = "//div[@class=\"rt-tr-group\"]//div[3][contains(text(), ' ')]")
-    private List<SelenideElement> booksAuthors;
+    private static List<SelenideElement> booksAuthors;
 
     @FindBy(xpath = "//div[@class=\"rt-tr-group\"]//div[4][contains(text(), ' ')]")
-    private List<SelenideElement> booksPublishers;
+    private static List<SelenideElement> booksPublishers;
 
     @FindBy(css = ".-previous > button")
-    private SelenideElement previousButton;
+    private static SelenideElement previousButton;
 
     @FindBy(css = ".-next > button")
-    private SelenideElement nextButton;
+    private static SelenideElement nextButton;
 
     @FindBy(css = ".-pageSizeOptions > select")
-    private SelenideElement rowsSelector;
+    private static SelenideElement rowsSelector;
 
     @FindBy(css = ".-pageJump > input")
-    private SelenideElement pageNumber;
+    private static SelenideElement pageNumber;
 
-    public void findBooks(String keys) {
+    @FindBy(css = ".-pageInfo > span")
+    private static SelenideElement numberOfPages;
+
+    @FindBy (xpath = "//*[@class='action-buttons']/span/a")
+    private static SelenideElement chosenBook;
+
+    @FindBy (xpath = "//*[@class='text-right fullButton']/button")
+    private static SelenideElement addToCollectionBtn;
+
+    @FindBy (xpath = "//*[@class='text-left fullButton']/button")
+    private static SelenideElement backToBookStoreBtn;
+
+    public static SelenideElement getAddToCollectionBtn() {
+        return addToCollectionBtn;
+    }
+
+    public static SelenideElement getChosenBook() {
+        return chosenBook;
+    }
+
+    public static void clickBackToStoreBtn() {
+        backToBookStoreBtn.click();
+    }
+
+    public static SelenideElement getNextButton() {
+        return nextButton;
+    }
+
+    public static SelenideElement getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public static void findBooks(String keys) {
         searchBox.sendKeys(keys);
     }
 
-    public SelenideElement getBookTitle(int index) {
+    public static void clearSearchBox() {
+        searchBox.clear();
+    }
+
+    public static SelenideElement getBookTitle(int index) {
         return booksTitles.get(index);
     }
 
-    public List<String> getBookTitles() {
+    public static List<String> getBookTitles() {
         List<String> titles = new ArrayList<>();
         for (SelenideElement title : booksTitles) {
             titles.add(title.getText());
@@ -56,11 +92,11 @@ public class BookStorePage {
         return titles;
     }
 
-    public SelenideElement getBookAuthor(int index) {
+    public static SelenideElement getBookAuthor(int index) {
         return booksAuthors.get(index);
     }
 
-    public List<String> getBookAuthors() {
+    public static List<String> getBookAuthors() {
         List<String> authors = new ArrayList<>();
         for (SelenideElement author : booksAuthors) {
             authors.add(author.getText());
@@ -68,7 +104,7 @@ public class BookStorePage {
         return authors;
     }
 
-    public SelenideElement getBookPublisher(int index) {
+    public static SelenideElement getBookPublisher(int index) {
         return booksPublishers.get(index);
     }
 
@@ -80,21 +116,41 @@ public class BookStorePage {
         return publishers;
     }
 
-    public void clickPreviousButton() {
+    public static void clickPreviousButton() {
         previousButton.click();
     }
 
-    public void clickNextButton() {
+    public static void clickNextButton() {
         nextButton.click();
     }
 
-    public void selectRow(String value){
+    public static boolean checkEnabledPrevBtn() {
+        return previousButton.isEnabled();
+    }
+
+    public static boolean checkEnabledNextBtn() {
+        return nextButton.isEnabled();
+    }
+
+    public static SelenideElement getRowsSelector() {
+        return rowsSelector;
+    }
+
+    public static void selectRow(String value){
         Select rows = new Select(rowsSelector);
         rows.selectByValue(value);
     }
 
-    public String getPageFieldValue() {
+    public static String getPageFieldValue() {
         return pageNumber.getAttribute("value");
+    }
+
+    public static void clickChosenBook() {
+        chosenBook.click();
+    }
+
+    public static void clickAddToCollectionBtn() {
+        addToCollectionBtn.click();
     }
 }
 
