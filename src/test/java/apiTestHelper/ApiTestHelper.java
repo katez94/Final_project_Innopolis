@@ -3,7 +3,6 @@ package apiTestHelper;
 import bookStore.bookStoreModel.BooksToAdd;
 import bookStore.bookStoreModel.CollectionOfIsbn;
 import bookStore.bookStoreModel.LogInViewModel;
-import io.restassured.http.Header;
 import requests.BookStoreApi;
 
 import java.util.Collections;

@@ -10,4 +10,5 @@ public class BaseTest {
     public void deleteBooksInit() {
         bookStoreApi.deleteBooks(bookStoreApi.getUser().getUserId());
     }
+
 }

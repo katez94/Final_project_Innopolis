@@ -28,11 +28,21 @@ public class UserInterfaceTest {
         Configuration.timeout = 10000;
     }
 
+    @AfterAll
+    static void deleteBooksAndLogOutAfterAllTests(){
+        open(PROFILE_URL, ProfilePage.class);
+        ProfilePage.getDeleteAllBooksBtn().scrollIntoView(true);
+        ProfilePage.clickDeleteAllBooksBtn();
+        ProfilePage.clickOkDeleteBtn();
+        switchTo().alert().accept();
+        ProfilePage.clickLogOutBtn();
+    }
+
   // LOGIN_PAGE TESTS
   @Step("LogIn")
     @Test
     void logInTest() {
-        LogInPage logInPage = open(LOGIN_URL, LogInPage.class);
+        open(LOGIN_URL, LogInPage.class);
         LogInPage.inputUserName(TEST_USER_NAME);
         LogInPage.inputPassword(TEST_USER_PASSWORD);
         LogInPage.getLoginBtn().scrollIntoView(true);
@@ -43,7 +53,7 @@ public class UserInterfaceTest {
     @Step("LogInPageStatics")
     @Test
     public void loginPageStaticsTest(){
-        LogInPage logInPage = open(LOGIN_URL, LogInPage.class);
+        open(LOGIN_URL, LogInPage.class);
         Assertions.assertEquals(LOGIN_HEADER,LogInPage.getHeader().getText());
         Assertions.assertEquals(TITLE_H2,LogInPage.getTitleH2().getText());
         Assertions.assertEquals(TITLE_H5,LogInPage.getTitleH5().getText());
@@ -54,7 +64,7 @@ public class UserInterfaceTest {
     @Step("goToNewUserPage")
     @Test
     public void goToNewUserPageTest(){
-        LogInPage logInPage = open(LOGIN_URL, LogInPage.class);
+        open(LOGIN_URL, LogInPage.class);
         LogInPage.getNewUserBtn().scrollIntoView(true);
         LogInPage.clickNewUserBtn();
         webdriver().shouldHave(url(REGISTER_URL));
@@ -65,7 +75,7 @@ public class UserInterfaceTest {
     @Step("SearchByValidTitle")
     @Test
     public void searchByValidTitleTest(){
-        BookStorePage bookStorePage = open(BOOKSTORE_URL, BookStorePage.class);
+        open(BOOKSTORE_URL, BookStorePage.class);
         List<String> titles = BookStorePage.getBookTitles();
         String title = titles.get(new Random().nextInt(titles.size()-1));
         BookStorePage.findBooks(title);
@@ -73,14 +83,14 @@ public class UserInterfaceTest {
         String publisher = BookStorePage.getBookPublisher(0).getText();
         Assertions.assertEquals(title, BookStorePage.getBookTitles().get(0));
         Assertions.assertEquals(author, BookStorePage.getBookAuthors().get(0));
-        Assertions.assertEquals(publisher,bookStorePage.getBookPublishers().get(0));
+        Assertions.assertEquals(publisher,BookStorePage.getBookPublishers().get(0));
         BookStorePage.clearSearchBox();
     }
 
     @Step("Check5RowsSelector")
     @Test
     public void check5RowsSelectorTest() {
-        BookStorePage bookStorePage = open(BOOKSTORE_URL, BookStorePage.class);
+        open(BOOKSTORE_URL, BookStorePage.class);
         BookStorePage.getRowsSelector().scrollIntoView(true);
         BookStorePage.selectRow("5");
         Assertions.assertFalse(BookStorePage.checkEnabledPrevBtn());
@@ -92,7 +102,7 @@ public class UserInterfaceTest {
     @Step("LastNextBtnNotActive")
     @Test
     public void lastNextBtnNotActiveTest() {
-        BookStorePage bookStorePage = open(BOOKSTORE_URL, BookStorePage.class);
+        open(BOOKSTORE_URL, BookStorePage.class);
         String numberOfPagesAsText = BookStorePage.getNumberOfPages().getText();
         int numberOfPages = Integer.parseInt(numberOfPagesAsText);
         BookStorePage.getNextButton().scrollIntoView(true);

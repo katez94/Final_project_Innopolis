@@ -90,6 +90,9 @@ public class BookStorePage {
 
     public static List<String> getBookTitles() {
         List<String> titles = new ArrayList<>();
+        if(booksTitles.size() == 0){
+            return getBookTitles();
+        }
         for (SelenideElement title : booksTitles) {
             titles.add(title.getText());
         }
@@ -112,7 +115,7 @@ public class BookStorePage {
         return booksPublishers.get(index);
     }
 
-    public List<String> getBookPublishers() {
+    public static List<String> getBookPublishers() {
         List<String> publishers = new ArrayList<>();
         for (WebElement publisher : booksPublishers) {
             publishers.add(publisher.getText());
