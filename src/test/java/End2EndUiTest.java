@@ -2,9 +2,7 @@ import bookStore.bookStorePages.BookStorePage;
 import bookStore.bookStorePages.LogInPage;
 import bookStore.bookStorePages.ProfilePage;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import javafx.scene.control.Alert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -25,7 +23,7 @@ public class End2EndUiTest {
     @Step("SetUp")
     static void setUp() {
         Configuration.browser = "chrome";
-//        Configuration.headless = true;
+        Configuration.headless = true;
         Configuration.startMaximized = true;
         Configuration.timeout = 3000;
     }
@@ -63,6 +61,7 @@ public class End2EndUiTest {
         BookStorePage.clickBackToStoreBtn();
 
         // возвращаемся в профиль, проверяем, что добавили ту книгу, по автору и издателю
+        ProfilePage profilePage1 = open(PROFILE_URL, ProfilePage.class);
         String addedBookAuthor = ProfilePage.getBookAuthor(0).getText();
         String bookPublisher = ProfilePage.getBookPublisher(0).getText();
         Assertions.assertEquals(firstBookToAddAuthor,addedBookAuthor);
@@ -76,9 +75,21 @@ public class End2EndUiTest {
         BookStorePage.findBooks(secondBookToAddTitle);
         BookStorePage.getChosenBook().scrollIntoView(true);
         BookStorePage.clickChosenBook();
+        BookStorePage.getAddToCollectionBtn().scrollIntoView(true);
         BookStorePage.clickAddToCollectionBtn();
         switchTo().alert().accept();
 
+        // возвращаемся в профиль, удаляем все книги, проверяем, что книг нет
+        ProfilePage profilePage2 = open(PROFILE_URL, ProfilePage.class);
+        ProfilePage.getDeleteAllBooksBtn().scrollIntoView(true);
+        ProfilePage.clickDeleteAllBooksBtn();
+        ProfilePage.clickOkDeleteBtn();
+        switchTo().alert().accept();
+        Assertions.assertEquals(0,ProfilePage.getBookTitles().size());
+
+        // разлогиниваемся
+        ProfilePage.clickLogOutBtn();
+        webdriver().shouldHave(url(LOGIN_URL));
 
     }
 }

@@ -20,7 +20,7 @@ public class ProfilePage {
     @FindBy (id = "basic-addon2")
     private static SelenideElement searchBtn;
 
-    @FindBy (xpath = "//div[@class='text-right col-md-4 col-sm-12']/button")
+    @FindBy (xpath = "//*[@class='text-right col-md-5 col-sm-12']/button")
     private static SelenideElement logOutBtn;
 
     @FindBy (xpath = "//*[@class=\"text-left button\"]/button")
@@ -55,6 +55,13 @@ public class ProfilePage {
 
     @FindBy(id = "delete-record-undefined")
     private static List<SelenideElement> deleteActionBtns;
+
+    @FindBy(xpath = "//*[@id='closeSmallModal-ok']")
+    private static SelenideElement okDeleteBtn;
+
+    public static void clickOkDeleteBtn() {
+        okDeleteBtn.click();
+    }
 
     public static SelenideElement getBookAuthor(int index) {
         return booksAuthors.get(index);

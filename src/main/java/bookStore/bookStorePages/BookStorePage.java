@@ -64,6 +64,10 @@ public class BookStorePage {
         backToBookStoreBtn.click();
     }
 
+    public static SelenideElement getBackToBookStoreBtn() {
+        return backToBookStoreBtn;
+    }
+
     public static SelenideElement getNextButton() {
         return nextButton;
     }
