@@ -6,7 +6,6 @@ public class Books {
     ArrayList<Book> books;
 
     public ArrayList<Book> getBooks() {
-        //todo зачем надо?
         return books;
     }
 

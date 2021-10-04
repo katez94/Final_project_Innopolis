@@ -5,6 +5,7 @@ import bookStore.bookStoreModel.CollectionOfIsbn;
 import bookStore.bookStoreModel.LogInViewModel;
 import requests.BookStoreApi;
 
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -17,13 +18,8 @@ public class ApiTestHelper {
     public static final LogInViewModel logInViewModel = new LogInViewModel(TEST_USER_NAME, TEST_USER_PASSWORD);
     BookStoreApi bookStoreApi = new BookStoreApi();
 
-    //todo написать что делает
-    public  String getRandomIsbn() {
+    public String getRandomIsbn() {
         return bookStoreApi.getListOfBooks().getBooks().get(new Random().nextInt(bookStoreApi.getListOfBooks().getBooks().size() - 1)).getIsbn();
-    }
-
-    public static BooksToAdd getBooksToAdd(String userId, List<CollectionOfIsbn> collection){
-        return new BooksToAdd(userId, collection);
     }
 
     public BooksToAdd getBookToAdd(String userId, String isbn){

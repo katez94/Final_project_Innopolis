@@ -1,10 +1,10 @@
 import apiTestHelper.ApiTestHelper;
 import apiTestHelper.BaseTest;
+import org.junit.jupiter.api.DisplayName;
 import requests.BookStoreApi;
 import bookStore.bookStoreModel.*;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,20 +17,20 @@ public class ApiTest extends BaseTest {
     ApiTestHelper apiTestHelper = new ApiTestHelper();
     public String ISBN = apiTestHelper.getRandomIsbn();
 
-    @Step("GetAllBooks")
+    @DisplayName("GetAllBooks")
     @Test
     void getAllBooksTest() {
         bookStoreApi.getListOfBooks();
     }
 
-    @Step("GetOneBook")
+    @DisplayName("GetOneBook")
     @Test
     void getBookByISBNTest() {
         Book book = bookStoreApi.getBookByISBN(ISBN);
         Assertions.assertEquals(ISBN, book.getIsbn());
     }
 
-    @Step("AddOneBook")
+    @DisplayName("AddBook")
     @Test
     void addOneBookToUserTest() {
         BooksToAdd bookToAdd = apiTestHelper.getBookToAdd(bookStoreApi.getUser().getUserId(), ISBN);
@@ -38,7 +38,7 @@ public class ApiTest extends BaseTest {
         bookStoreApi.addBooksToUser(bookToAdd, 400);
     }
 
-    @Step("ReplaceBook")
+    @DisplayName("ReplaceBook")
     @Test
     void replaceBookTest() {
         String randomIsbn = apiTestHelper.getRandomIsbn();

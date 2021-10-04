@@ -23,7 +23,7 @@ public class UserInterfaceTest {
     @Step("SetUp")
     static void setUp() {
         Configuration.browser = "chrome";
-      //Configuration.headless = true;
+        Configuration.headless = true;
         Configuration.startMaximized = true;
         Configuration.timeout = 10000;
     }
@@ -38,8 +38,8 @@ public class UserInterfaceTest {
         ProfilePage.clickLogOutBtn();
     }
 
-  // LOGIN_PAGE TESTS
-  @Step("LogIn")
+
+  @DisplayName("LogIn")
     @Test
     void logInTest() {
         open(LOGIN_URL, LogInPage.class);
@@ -50,7 +50,7 @@ public class UserInterfaceTest {
         webdriver().shouldHave(url(PROFILE_URL));
     }
 
-    @Step("LogInPageStatics")
+    @DisplayName("LogInPageStatics")
     @Test
     public void loginPageStaticsTest(){
         open(LOGIN_URL, LogInPage.class);
@@ -61,7 +61,7 @@ public class UserInterfaceTest {
         Assertions.assertEquals(PASSWORD_LABEL,LogInPage.getPasswordLabel().getText());
     }
 
-    @Step("goToNewUserPage")
+    @DisplayName("goToNewUserPage")
     @Test
     public void goToNewUserPageTest(){
         open(LOGIN_URL, LogInPage.class);
@@ -69,10 +69,9 @@ public class UserInterfaceTest {
         LogInPage.clickNewUserBtn();
         webdriver().shouldHave(url(REGISTER_URL));
     }
-    // вызывать методы через класс или через переменную?
 
     // BOOKSTORE_PAGE TESTS
-    @Step("SearchByValidTitle")
+    @DisplayName("SearchByValidTitle")
     @Test
     public void searchByValidTitleTest(){
         open(BOOKSTORE_URL, BookStorePage.class);
@@ -87,7 +86,7 @@ public class UserInterfaceTest {
         BookStorePage.clearSearchBox();
     }
 
-    @Step("Check5RowsSelector")
+    @DisplayName("Check5RowsSelector")
     @Test
     public void check5RowsSelectorTest() {
         open(BOOKSTORE_URL, BookStorePage.class);
@@ -99,7 +98,7 @@ public class UserInterfaceTest {
         Assertions.assertNotEquals("1", BookStorePage.getPageFieldValue());
     }
 
-    @Step("LastNextBtnNotActive")
+    @DisplayName("LastNextBtnNotActive")
     @Test
     public void lastNextBtnNotActiveTest() {
         open(BOOKSTORE_URL, BookStorePage.class);
