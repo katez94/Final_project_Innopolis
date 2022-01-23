@@ -23,7 +23,7 @@ public class UserInterfaceTest {
     @Step("SetUp")
     static void setUp() {
         Configuration.browser = "chrome";
-        Configuration.headless = true;
+        Configuration.headless = false;
         Configuration.startMaximized = true;
         Configuration.timeout = 10000;
     }

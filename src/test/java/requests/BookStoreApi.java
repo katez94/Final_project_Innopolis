@@ -9,6 +9,9 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import java.io.File;
+
+import static apiTestHelper.ApiTestHelper.KEYSTORE_PASSWORD;
 import static apiTestHelper.ApiTestHelper.logInViewModel;
 import static bookStore.TestConst.TEST_USER_NAME;
 import static bookStore.TestConst.TEST_USER_PASSWORD;
@@ -16,14 +19,17 @@ import static org.hamcrest.Matchers.*;
 
 public class BookStoreApi {
 
+
     private static RequestSpecification requestSpecification = getRequestSpecification();
 
     private static RequestSpecification getRequestSpecification() {
-        RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder();
-        requestSpecBuilder.setBaseUri("https://demoqa.com/BookStore/v1");
-        requestSpecBuilder.setContentType(ContentType.JSON);
-        requestSpecBuilder.log(LogDetail.ALL);
-        return requestSpecBuilder.build();
+        File keystore = new File("/Users/nikitagubarenko/IdeaProjects/Final_project_Innopolis/src/test/resources/keystore.jks");
+        return new RequestSpecBuilder()
+                .setBaseUri("https://demoqa.com/BookStore/v1")
+                .setContentType(ContentType.JSON)
+                .log(LogDetail.ALL)
+                .setTrustStore(keystore, KEYSTORE_PASSWORD)
+                .build();
     }
 
     public Books getListOfBooks() {
@@ -76,11 +82,9 @@ public class BookStoreApi {
                 .then().statusCode(anyOf(is(200), is(400))).extract().response();
     }
 
-
-
     private static TokenViewModel generateToken() {
         return RestAssured
-                .given()
+                .given(requestSpecification)
                 .log().all()
                 .body(logInViewModel)
                 .contentType("application/json")
@@ -89,13 +93,10 @@ public class BookStoreApi {
 
     public User getUser() {
         return RestAssured
-                .given()
+                .given(requestSpecification)
                 .body(logInViewModel)
                 .contentType("application/json")
                 .post("https://demoqa.com/Account/v1/Login")
                 .body().as(User.class);
     }
-
-
-
 }
