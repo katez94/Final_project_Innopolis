@@ -1,4 +1,4 @@
-## Final project Innopolis
+## Book store tests (Final project Innopolis)
 https://github.com/katez94/Final_project_Innopolis.git
 
 Тестируемое приложение - https://demoqa.com/books
